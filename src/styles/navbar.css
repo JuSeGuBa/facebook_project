@@ -1,0 +1,41 @@
+*::marker {
+  content: none; /* Desactiva el contenido del marker */
+}
+
+/* Estilo base para los enlaces */
+.navbar-item {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 10px; /* Espacio para la línea debajo del icono */
+  transition: color 0.3s ease; /* Transición suave para el color del texto */
+}
+
+/* Estilo para los iconos */
+.icon {
+  color: #6b7280; /* Color gris inicial para los iconos */
+  transition: color 0.1s ease; /* Transición suave para el cambio de color */
+}
+
+/* Cambio de color y la línea en la parte inferior al pasar el mouse */
+.navbar-item:hover .icon {
+  color: #1877f2; /* Cambia el color del icono a azul */
+}
+
+.navbar-item:hover {
+  color: #1877f2; /* Cambia el color del enlace (si aplica) */
+}
+
+.navbar-item:hover::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #1877f2; /* Línea azul debajo del icono */
+}
+
+.avatar:focus {
+  outline: none;
+  box-shadow: none; /* Elimina el borde generado por foco */
+}
