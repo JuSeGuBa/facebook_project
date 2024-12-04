@@ -49,19 +49,12 @@ const CustomNavbar: React.FC = () => {
         <Dropdown
           arrowIcon={false}
           inline
-          label={
-            <Avatar
-              alt="User settings"
-              img="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
-              rounded
-              className="focus:ring-0 focus:outline-none"
-            />
-          }
+          label={<Avatar alt="User settings" rounded></Avatar>}
         >
           <Dropdown.Header>
-            <span className="block text-sm">Bonnie Green</span>
+            <span className="block text-sm">Sebastian Guzman</span>
             <span className="block truncate text-sm font-medium">
-              name@flowbite.com
+              sebancho42@gmail.com
             </span>
           </Dropdown.Header>
           <Dropdown.Item>Dashboard</Dropdown.Item>
@@ -72,7 +65,7 @@ const CustomNavbar: React.FC = () => {
         </Dropdown>
       </div>
 
-      <Navbar.Collapse className="flex justify-center ml-[-50px]">
+      <Navbar.Collapse className="navbar-collapse flex justify-center space-x-10 ml-[-50px]">
         <Navbar.Link href="/" active className="mr-5 navbar-item">
           <MdHomeFilled className="icon text-3xl" />
         </Navbar.Link>

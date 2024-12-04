@@ -1,3 +1,4 @@
-h1 {
-  color: black;
+.flowbite-sidebar {
+  background-color: transparent !important; /* Elimina el fondo blanco */
+  box-shadow: none !important; /* Remueve sombras predeterminadas */
 }

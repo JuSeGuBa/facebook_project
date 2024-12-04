@@ -2,6 +2,13 @@
   content: none; /* Desactiva el contenido del marker */
 }
 
+.navbar-collapse {
+  display: flex;
+  justify-content: center;
+  gap: 40px; /* Controla el espacio entre los íconos */
+  width: 100%; /* Asegura que ocupe todo el ancho */
+}
+
 /* Estilo base para los enlaces */
 .navbar-item {
   position: relative;
