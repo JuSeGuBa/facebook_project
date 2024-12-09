@@ -13,7 +13,7 @@
 .navbar-item {
   position: relative;
   display: inline-block;
-  padding-bottom: 10px; /* Espacio para la línea debajo del icono */
+  padding-bottom: 10px !important; /* Espacio para la línea debajo del icono */
   transition: color 0.3s ease; /* Transición suave para el color del texto */
 }
 
