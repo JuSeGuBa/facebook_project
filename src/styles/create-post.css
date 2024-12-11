@@ -1,0 +1,83 @@
+/* Contenedor principal de la creación de la publicación */
+.post-create {
+  margin-bottom: 15px;
+  display: flex; /* Usa flexbox para alinear los elementos */
+  justify-content: center; /* Centra horizontalmente el contenido */
+  align-items: center; /* Centra verticalmente el contenido */
+  flex-direction: column; /* Organiza los elementos de forma vertical */
+  width: 100%; /* Asegura que el contenedor ocupe todo el ancho disponible */
+  padding: 0; /* Agrega algo de padding para separar del borde */
+}
+
+/* Estilos del contenedor de avatar y formulario */
+.description {
+  display: flex; /* Usa flexbox para alinear el avatar y el formulario horizontalmente */
+  align-items: center; /* Centra verticalmente los elementos dentro del contenedor */
+  justify-content: flex-start; /* Centra los elementos horizontalmente dentro de description */
+  width: 100%; /* Asegura que ocupe todo el ancho */
+  padding: 0 15px; /* Agrega un poco de padding en los laterales */
+  box-sizing: border-box; /* Asegura que el padding no rompa el diseño */
+}
+
+/* Avatar */
+.description img {
+  width: 40px; /* Ajusta el tamaño del avatar */
+  height: 40px;
+  border-radius: 50%; /* Redondea el avatar */
+  object-fit: cover; /* Asegura que la imagen se recorte adecuadamente */
+}
+
+/* Formulario */
+.create-post-form {
+  margin-left: 1rem; /* Espacio entre el avatar y el input */
+  flex-grow: 1; /* Hace que el formulario ocupe el espacio restante */
+  width: 100%;
+}
+
+/* Contenedor del input de búsqueda */
+.input-container {
+  position: relative;
+  width: 100%;
+}
+
+/* Estilos del input de búsqueda */
+.search-input {
+  width: 100%;
+  padding: 12px 50px 12px 12px; /* Añade espacio para el ícono a la derecha */
+  background-color: #434343; /* Fondo oscuro */
+  color: white; /* Texto blanco */
+  border-radius: 9999px; /* Borde redondeado */
+  font-size: 1rem; /* Tamaño de la fuente */
+  border: none; /* Elimina el borde predeterminado */
+  outline: none; /* Elimina el contorno */
+}
+
+/* Estilos al enfocar el input */
+.search-input:focus {
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.7); /* Añadir sombra al enfocar */
+  background-color: #3d3d3d; /* Fondo ligeramente más claro */
+}
+
+/* Botón de foto dentro del input */
+.input-button {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: transparent;
+  border: none;
+  color: #45bd62; /* Color verde para el botón */
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50%;
+}
+
+.input-button:hover {
+  color: #36a14c; /* Color más oscuro al pasar el mouse */
+}
+
+/* Input oculto para cargar archivos */
+.hidden-file-input {
+  display: none; /* Oculta el input file */
+}

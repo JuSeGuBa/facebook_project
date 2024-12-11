@@ -9,6 +9,7 @@ import {
 import { HiOutlineLink } from "react-icons/hi";
 import { BiWorld } from "react-icons/bi";
 import { IoSend } from "react-icons/io5";
+import CreatePost from "./create-post";
 
 // Definición de la interfaz Post
 interface Post {
@@ -254,6 +255,8 @@ const posts: Post[] = [
 const FlatList: React.FC = () => {
   return (
     <div className="post-list">
+      <CreatePost />
+
       {posts.map((post) => (
         <FacebookPost key={post.id} post={post} />
       ))}

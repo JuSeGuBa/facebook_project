@@ -9,6 +9,7 @@ const Home = () => {
     <div>
       <>
         <CustomNavbar />
+
         <div className="home-container">
           <FlatList />
           <CustomSidebar />
