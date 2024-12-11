@@ -11,6 +11,7 @@
 
 /* Asegúrate de que el sidebar tenga espacio a la izquierda */
 .home-container {
+  background-color: #1c1c1d;
   display: flex;
   justify-content: space-between; /* Esto coloca el FlatList y el Sidebar uno al lado del otro */
   align-items: flex-start;

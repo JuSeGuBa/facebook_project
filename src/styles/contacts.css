@@ -1,0 +1,52 @@
+.contacts {
+  position: absolute;
+  top: 60px; /* Ajustado dinámicamente por navbarHeight */
+  right: 0;
+  width: 300px;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  z-index: 10;
+  color: #b0b3b8;
+}
+
+.card {
+  display: flex;
+  align-items: center; /* Asegura la alineación vertical */
+  padding: 0rem;
+  background-color: transparent !important;
+  border: none;
+  margin-bottom: 0.7rem;
+  gap: 10px; /* Añade espacio entre el Avatar y el Nombre */
+  width: 100%;
+  box-shadow: none !important;
+  height: 50px;
+}
+
+.contact-name {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #f2f2f2;
+  white-space: nowrap; /* Mantiene el texto en una sola línea */
+  overflow: hidden;
+  text-overflow: ellipsis; /* Muestra los puntos suspensivos (...) */
+  flex-grow: 1; /* El nombre ocupa todo el espacio disponible */
+  text-align: left; /* Alineación del texto a la izquierda */
+  padding-right: 10px;
+  max-width: 150px;
+}
+
+h2 {
+  margin-bottom: 1rem;
+}
+
+.avatar-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.avatar-container .avatar {
+  width: 40px; /* Tamaño fijo para el avatar */
+  height: 40px;
+}
