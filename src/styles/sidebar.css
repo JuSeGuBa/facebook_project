@@ -1,24 +1,13 @@
-.sidebar-general {
-  background-color: #1c1c1d;
-}
-
 .flowbite-sidebar {
   background-color: transparent !important; /* Elimina el fondo blanco */
   box-shadow: none !important; /* Remueve sombras predeterminadas */
 }
 
 .footer {
-  background-color: #1c1c1d;
+  position: relative;
+  max-width: 300px;
   font-family: inherit;
-  max-width: 20%;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
   color: #fff; /* Texto blanco */
-  text-align: left;
-  /* padding: 10px 0; */
-  z-index: 10; /* Asegúrate de que se quede encima de otros elementos */
 }
 
 .footer-content {

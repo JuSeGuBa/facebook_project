@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import "../styles/contacts.css";
 import { Avatar, Card } from "flowbite-react";
 
@@ -23,32 +22,8 @@ const contacts: Contact[] = [
 ];
 
 const Contact = () => {
-  const [navbarHeight, setNavbarHeight] = useState(0);
-
-  useEffect(() => {
-    const navbar = document.querySelector("nav");
-
-    const updateNavbarHeight = () => {
-      if (navbar) {
-        setNavbarHeight(navbar.offsetHeight);
-      }
-    };
-
-    updateNavbarHeight();
-    window.addEventListener("resize", updateNavbarHeight);
-
-    return () => {
-      window.removeEventListener("resize", updateNavbarHeight);
-    };
-  }, []);
-
   return (
-    <div
-      className="contacts "
-      style={{
-        top: navbarHeight,
-      }}
-    >
+    <div className="contacts ">
       <h2 className="text-xl font-bold mb-4">Contactos</h2>
       <div className="space-y-4">
         {contacts.map((contact, index) => (

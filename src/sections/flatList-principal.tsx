@@ -24,13 +24,12 @@ interface Post {
 const getFormattedDate = (createdAt: string) => {
   const currentDate = new Date();
   const createdDate = new Date(createdAt);
-  const diffInTime = currentDate.getTime() - createdDate.getTime();
 
-  const diffInHours = diffInTime / (1000 * 3600);
-  const diffInDays = diffInTime / (1000 * 3600 * 24);
+  // Comparar fechas ignorando la hora
+  const isSameDay = currentDate.toDateString() === createdDate.toDateString();
 
-  if (diffInHours < 24) {
-    return `${Math.floor(diffInDays * 24)} h ·`;
+  if (isSameDay) {
+    return "Hoy ·";
   }
 
   const options: Intl.DateTimeFormatOptions = {
@@ -235,27 +234,41 @@ const FacebookPost: React.FC<{ post: Post }> = ({ post }) => {
   );
 };
 
-const posts: Post[] = [
-  {
-    id: 1,
-    text: "No olvides aprovechar las oportunidades que tenemos disponibles para ti.",
-    image: "/public/descarga.webp",
-    name: "San Felipe Tlalimimilpan",
-    createdAt: "2024-12-01T10:00:00",
-  },
-  {
-    id: 2,
-    text: "¡Los esperamos con muchas ganas de compartir más conocimientos!",
-    image: "/public/descarga.webp",
-    name: "Alejandro Cuenca",
-    createdAt: "2024-12-03T12:00:00",
-  },
-];
+// const posts: Post[] = [
+//   {
+//     id: 1,
+//     text: "No olvides aprovechar las oportunidades que tenemos disponibles para ti.",
+//     image: "/public/descarga.webp",
+//     name: "San Felipe Tlalimimilpan",
+//     createdAt: "2024-12-01T10:00:00",
+//   },
+//   {
+//     id: 2,
+//     text: "¡Los esperamos con muchas ganas de compartir más conocimientos!",
+//     image: "/public/descarga.webp",
+//     name: "Alejandro Cuenca",
+//     createdAt: "2024-12-03T12:00:00",
+//   },
+// ];
 
 const FlatList: React.FC = () => {
+  const [posts, setPosts] = useState<Post[]>([]);
+
+  const handleCreateForm = (post: { text: string; image: string }) => {
+    setPosts((prevPosts) => [
+      ...prevPosts,
+      {
+        id: prevPosts.length + 1,
+        text: post.text,
+        image: post.image,
+        name: "Nombre predeterminado",
+        createdAt: new Date().toISOString(),
+      },
+    ]);
+  };
   return (
     <div className="post-list">
-      <CreatePost />
+      <CreatePost onPostCreate={handleCreateForm} />
 
       {posts.map((post) => (
         <FacebookPost key={post.id} post={post} />

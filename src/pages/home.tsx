@@ -6,17 +6,15 @@ import Contact from "../sections/contacts";
 
 const Home = () => {
   return (
-    <div>
-      <>
-        <CustomNavbar />
+    <>
+      <CustomNavbar />
 
-        <div className="home-container">
-          <FlatList />
-          <CustomSidebar />
-        </div>
+      <div className="home-container">
+        <CustomSidebar />
+        <FlatList />
         <Contact />
-      </>
-    </div>
+      </div>
+    </>
   );
 };
 

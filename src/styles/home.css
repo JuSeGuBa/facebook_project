@@ -1,24 +1,13 @@
 /* Limitar el ancho del contenedor de las publicaciones a un tamaño adecuado */
 .post-list {
-  max-width: 500px; /* Ajusta el ancho a lo que consideres adecuado */
-  margin: 0 auto; /* Centra el contenido horizontalmente */
   padding-top: 20px; /* Agrega un margen superior para separarlo del navbar */
   padding-bottom: 20px;
-  position: relative;
   width: 100%; /* Asegura que el FlatList ocupe el espacio restante */
-  box-sizing: border-box;
 }
 
 /* Asegúrate de que el sidebar tenga espacio a la izquierda */
 .home-container {
-  background-color: #1c1c1d;
   display: flex;
-  justify-content: space-between; /* Esto coloca el FlatList y el Sidebar uno al lado del otro */
-  align-items: flex-start;
-  width: 100%;
-  flex-direction: row-reverse; /* Esto invierte el orden, poniendo el Sidebar a la izquierda */
-  padding-left: 5px; /* Ajusta este valor para mover el contenido más a la izquierda */
-  padding-right: 200px; /* Ajusta el margen derecho si es necesario */
 }
 
 .sidebar {

@@ -1,12 +1,4 @@
 /* CSS para FlatList */
-.post-list {
-  max-width: 600px;
-  margin: 20px auto 0;
-  padding: 0 0 20px;
-  width: 100%;
-  box-sizing: border-box;
-}
-
 .post {
   background: #2e2e2e;
   border-radius: 8px;

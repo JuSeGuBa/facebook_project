@@ -13,18 +13,16 @@ import { HiUserCircle } from "react-icons/hi"; // Hero Icons
 // Tema personalizado para el sidebar
 const customTheme: CustomFlowbiteTheme["sidebar"] = {
   root: {
-    base: "bg-[#1C1C1D] h-screen", // Aseguramos que ocupe toda la altura de la pantalla
-    inner: "bg-[#1C1C1D]", // Fondo interno
+    inner: "bg-[#242424]", // Fondo interno
   },
 };
 
 const CustomSidebar: React.FC = () => {
   return (
-    <div className=" flex flex-col h-screen ">
+    <div className=" flex flex-col  ">
       <FlowbiteSidebar
         aria-label="Sidebar with multi-level dropdown example"
         theme={customTheme}
-        className="h-screen"
       >
         <FlowbiteSidebar.Items>
           <FlowbiteSidebar.ItemGroup>
@@ -82,7 +80,7 @@ const CustomSidebar: React.FC = () => {
             <FlowbiteSidebar.Collapse
               icon={IoIosArrowDropdownCircle}
               label="Ver más"
-              className="text-white hover:bg-[#2E2E2E] hover:text-gray-200 py-4"
+              className=" text-white hover:bg-[#2E2E2E] no-hover-text py-4"
             >
               <FlowbiteSidebar.Item
                 href="#"

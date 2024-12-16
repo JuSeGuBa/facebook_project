@@ -38,18 +38,20 @@
 .input-container {
   position: relative;
   width: 100%;
+  display: flex;
+  align-items: center;
 }
 
 /* Estilos del input de búsqueda */
 .search-input {
   width: 100%;
-  padding: 12px 50px 12px 12px; /* Añade espacio para el ícono a la derecha */
-  background-color: #434343; /* Fondo oscuro */
-  color: white; /* Texto blanco */
-  border-radius: 9999px; /* Borde redondeado */
-  font-size: 1rem; /* Tamaño de la fuente */
-  border: none; /* Elimina el borde predeterminado */
-  outline: none; /* Elimina el contorno */
+  padding: 12px 50px 12px 12px; /* Espacio adicional a la derecha */
+  background-color: #434343;
+  color: white;
+  border-radius: 9999px;
+  font-size: 1rem;
+  border: none;
+  outline: none;
 }
 
 /* Estilos al enfocar el input */
@@ -80,4 +82,61 @@
 /* Input oculto para cargar archivos */
 .hidden-file-input {
   display: none; /* Oculta el input file */
+}
+
+.post-button {
+  color: #1877f2;
+  display: inline-block;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Card flotante para la previsualización */
+
+/* Contenido de la previsualización */
+.preview-content {
+  width: 100%;
+  text-align: center;
+}
+
+.preview-content h4 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+/* Imagen de previsualización */
+.image-preview {
+  position: relative;
+  /* margin-bottom: 0.5px; */
+  padding-bottom: 0.5px;
+}
+
+.image-preview img {
+  width: 100%;
+  border-radius: 5px;
+  object-fit: cover;
+  height: 150px;
+}
+
+/* Botón para eliminar imagen */
+.remove-image {
+  position: absolute;
+  bottom: -50px;
+  left: 0;
+  background-color: #1877f2;
+  border-radius: 5%;
+  border: none;
+  color: #ffff;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 5px 10px;
+}
+
+/* Estilo del texto */
+.preview-content p {
+  font-size: 1rem;
+  color: #e0e0e0;
+  word-wrap: break-word;
+  margin-bottom: 20px;
+  margin-top: 60px;
 }
