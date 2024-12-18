@@ -54,6 +54,11 @@ const FacebookPost: React.FC<{ post: Post }> = ({ post }) => {
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState<Comment[]>(post.comments || []);
   const [showShareOptions, setShowShareOptions] = useState(false);
+  const [imageExpanded, setImageExpanded] = useState(false); // Estado para la imagen expandida
+
+  const handleImageClick = () => {
+    setImageExpanded(!imageExpanded); // Alternar entre expandir o contraer la imagen
+  };
 
   const handleReactionClick = (reaction: string) => {
     if (selectedReaction === reaction) {
@@ -105,7 +110,16 @@ const FacebookPost: React.FC<{ post: Post }> = ({ post }) => {
       </div>
 
       <p className="post-content">{post.text}</p>
-      <img src={post.image} alt="post visual" className="post-image" />
+      <div
+        className={`post-image-container ${imageExpanded ? "expanded" : ""}`}
+        onClick={handleImageClick}
+      >
+        <img
+          src={post.image}
+          alt="post visual"
+          className={`post-image ${imageExpanded ? "expanded" : ""}`}
+        />
+      </div>
 
       <div className="post-actions">
         <div
@@ -148,24 +162,42 @@ const FacebookPost: React.FC<{ post: Post }> = ({ post }) => {
 
         <div
           className="action-btn"
-          onMouseEnter={() => setShowShareOptions(true)} // Usa el nuevo estado
-          onMouseLeave={() => setShowShareOptions(false)} // Usa el nuevo estado
+          onMouseEnter={() => setShowShareOptions(true)}
+          onMouseLeave={() => setShowShareOptions(false)}
         >
           <FaShare />
           <span>Compartir</span>
           {showShareOptions && (
             <div className="share-options">
               {[
-                { icon: RiMessengerFill, label: "Messenger" },
-                { icon: RiInstagramLine, label: "Instagram" },
-                { icon: RiWhatsappFill, label: "WhatsApp" },
+                {
+                  icon: RiMessengerFill,
+                  label: "Messenger",
+                  url: "https://www.messenger.com",
+                },
+                {
+                  icon: RiInstagramLine,
+                  label: "Instagram",
+                  url: "https://www.instagram.com",
+                },
+                {
+                  icon: RiWhatsappFill,
+                  label: "WhatsApp",
+                  url: "https://web.whatsapp.com",
+                },
                 { icon: HiOutlineLink, label: "Copiar enlace" },
-              ].map(({ icon: Icon, label }, index) => (
+              ].map(({ icon: Icon, label, url }, index) => (
                 <button
                   key={index}
                   className="share-button"
                   title={label}
-                  onClick={() => console.log(`Botón de ${label} clickeado`)}
+                  onClick={() => {
+                    if (url) {
+                      window.open(url, "_blank");
+                    } else {
+                      console.log(`Botón de ${label} clickeado`);
+                    }
+                  }}
                 >
                   <Icon size={24} />
                 </button>
@@ -175,39 +207,27 @@ const FacebookPost: React.FC<{ post: Post }> = ({ post }) => {
         </div>
       </div>
 
-      {/* Área para enviar comentarios */}
-
       {showComments && (
-        <div
-          className="comentario-area"
-          style={{
-            position: "relative", // Para que el botón absoluto se posicione respecto a este contenedor
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
+        <div className="comentario-area" style={{ position: "relative" }}>
           <textarea
             value={commentText}
             onChange={(e) => setCommentText(e.target.value)}
             placeholder="Escribe un comentario público..."
             className="textarea-custom"
-            style={{
-              flex: 1,
-              paddingRight: "50px", // Añade espacio para evitar que el texto del textarea se solape con el botón
-            }}
+            style={{ flex: 1, paddingRight: "50px" }}
           />
           <button
             onClick={handleSendComment}
             className="button-send"
             style={{
-              position: "absolute", // Posición absoluta respecto al contenedor
-              bottom: "10px", // Desde abajo
-              right: "1px", // Desde la derecha
+              position: "absolute",
+              bottom: "10px",
+              right: "1px",
               background: "none",
               border: "none",
               fontSize: "1.1rem",
               cursor: "pointer",
-              color: "#0866FF", // Un color visible
+              color: "#0866FF",
             }}
           >
             <IoSend />
@@ -215,8 +235,7 @@ const FacebookPost: React.FC<{ post: Post }> = ({ post }) => {
         </div>
       )}
 
-      {/* Lista de comentarios */}
-      {/* {comments.length > 0 && <hr className="line-hr" />} */}
+      {comments.length > 0 && <hr className="line-hr" />}
       <div className="comentarios-list">
         {comments.map((comment) => (
           <div key={comment.id} className="comentario-item">
