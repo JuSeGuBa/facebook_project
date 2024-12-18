@@ -1,4 +1,4 @@
-import "../styles/flatList-principal.css"; // Asegúrate de que los estilos se carguen correctamente
+import "../styles/flatList-principal.css";
 import { useState } from "react";
 import { FaThumbsUp, FaRegThumbsUp, FaComment, FaShare } from "react-icons/fa";
 import {
@@ -8,6 +8,7 @@ import {
 } from "react-icons/ri";
 import { HiOutlineLink } from "react-icons/hi";
 import { BiWorld } from "react-icons/bi";
+import { FcLike } from "react-icons/fc";
 import { IoSend } from "react-icons/io5";
 import CreatePost from "./create-post";
 
@@ -18,14 +19,18 @@ interface Post {
   name: string;
   image: string;
   createdAt: string;
+  comments?: Comment[];
 }
 
-// Función para formatear la fecha
+interface Comment {
+  id: number;
+  description: string;
+}
+
 const getFormattedDate = (createdAt: string) => {
   const currentDate = new Date();
   const createdDate = new Date(createdAt);
 
-  // Comparar fechas ignorando la hora
   const isSameDay = currentDate.toDateString() === createdDate.toDateString();
 
   if (isSameDay) {
@@ -44,25 +49,26 @@ const getFormattedDate = (createdAt: string) => {
 const FacebookPost: React.FC<{ post: Post }> = ({ post }) => {
   const [liked, setLiked] = useState(false);
   const [showReactions, setShowReactions] = useState(false);
-  const [selectedReaction, setSelectedReaction] = useState<string | null>(null); // Estado para la reacción seleccionada
-  const [showComments, setShowComments] = useState(false); // Estado para mostrar los comentarios
+  const [selectedReaction, setSelectedReaction] = useState<string | null>(null);
+  const [showComments, setShowComments] = useState(false);
+  const [commentText, setCommentText] = useState("");
+  const [comments, setComments] = useState<Comment[]>(post.comments || []);
   const [showShareOptions, setShowShareOptions] = useState(false);
 
   const handleReactionClick = (reaction: string) => {
     if (selectedReaction === reaction) {
-      setSelectedReaction(null); // Si ya está seleccionado, lo deseleccionamos
+      setSelectedReaction(null);
     } else {
-      setSelectedReaction(reaction); // Si no, lo seleccionamos
+      setSelectedReaction(reaction);
     }
   };
 
-  // Función para obtener el icono y texto según la reacción seleccionada
   const getReactionTextAndIcon = () => {
     switch (selectedReaction) {
       case "👍":
         return { icon: <FaThumbsUp color="#0866FF" />, text: "Me gusta" };
       case "❤️":
-        return { icon: "❤️", text: "Me encanta" };
+        return { icon: <FcLike />, text: "Me encanta" };
       case "😂":
         return { icon: "😂", text: "Me divierte" };
       case "😮":
@@ -76,9 +82,20 @@ const FacebookPost: React.FC<{ post: Post }> = ({ post }) => {
 
   const { icon, text } = getReactionTextAndIcon();
 
+  const handleSendComment = () => {
+    if (commentText.trim() === "") return;
+
+    const newComment: Comment = {
+      id: comments.length + 1,
+      description: commentText,
+    };
+
+    setComments([...comments, newComment]);
+    setCommentText("");
+  };
+
   return (
     <div className="post">
-      {/* Cabecera del post */}
       <div className="post-header">
         <span className="author">{post.name}</span>
         <span className="date">
@@ -87,11 +104,9 @@ const FacebookPost: React.FC<{ post: Post }> = ({ post }) => {
         </span>
       </div>
 
-      {/* Contenido del post */}
       <p className="post-content">{post.text}</p>
       <img src={post.image} alt="post visual" className="post-image" />
 
-      {/* Acciones del post */}
       <div className="post-actions">
         <div
           className="action-btn"
@@ -104,7 +119,6 @@ const FacebookPost: React.FC<{ post: Post }> = ({ post }) => {
           {showReactions && (
             <div className="reactions">
               {[
-                // Muestra las reacciones disponibles
                 { emoji: "👍", label: "Me gusta" },
                 { emoji: "❤️", label: "Me encanta" },
                 { emoji: "😂", label: "Me divierte" },
@@ -115,7 +129,7 @@ const FacebookPost: React.FC<{ post: Post }> = ({ post }) => {
                   key={emoji}
                   onClick={() => handleReactionClick(emoji)}
                   className={`reaction-btn ${selectedReaction === emoji ? "selected" : ""}`}
-                  title={label} // Tooltip al pasar el mouse
+                  title={label}
                 >
                   {emoji}
                 </button>
@@ -126,7 +140,7 @@ const FacebookPost: React.FC<{ post: Post }> = ({ post }) => {
 
         <div
           className="action-btn"
-          onClick={() => setShowComments(!showComments)} // Cambio aquí para mostrar los comentarios
+          onClick={() => setShowComments(!showComments)}
         >
           <FaComment />
           <span>Comentar</span>
@@ -134,15 +148,14 @@ const FacebookPost: React.FC<{ post: Post }> = ({ post }) => {
 
         <div
           className="action-btn"
-          onMouseEnter={() => setShowShareOptions(true)}
-          onMouseLeave={() => setShowShareOptions(false)}
+          onMouseEnter={() => setShowShareOptions(true)} // Usa el nuevo estado
+          onMouseLeave={() => setShowShareOptions(false)} // Usa el nuevo estado
         >
           <FaShare />
           <span>Compartir</span>
           {showShareOptions && (
             <div className="share-options">
               {[
-                // Aquí agregas los íconos de las opciones de compartir
                 { icon: RiMessengerFill, label: "Messenger" },
                 { icon: RiInstagramLine, label: "Instagram" },
                 { icon: RiWhatsappFill, label: "WhatsApp" },
@@ -151,34 +164,10 @@ const FacebookPost: React.FC<{ post: Post }> = ({ post }) => {
                 <button
                   key={index}
                   className="share-button"
-                  title={label} // Tooltip al pasar el mouse
-                  onClick={() => {
-                    console.log(`Botón de ${label} clickeado`);
-                    // Agregar funcionalidad específica de cada botón aquí
-                  }}
-                  style={{
-                    background: "none",
-                    border: "none",
-                    cursor: "pointer",
-                    margin: "5px",
-                    padding: "10px",
-                    borderRadius: "50%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    color: "#707070",
-                    transition: "background-color 0.3s ease, color 0.3s ease",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = "#3B3D3E";
-                    e.currentTarget.style.color = "#fff"; // Color blanco para el ícono
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = "#252728";
-                    e.currentTarget.style.color = "#707070";
-                  }}
+                  title={label}
+                  onClick={() => console.log(`Botón de ${label} clickeado`)}
                 >
-                  <Icon size={24} /> {/* Tamaño ajustado */}
+                  <Icon size={24} />
                 </button>
               ))}
             </div>
@@ -186,70 +175,58 @@ const FacebookPost: React.FC<{ post: Post }> = ({ post }) => {
         </div>
       </div>
 
-      {/* Sección de comentarios */}
+      {/* Área para enviar comentarios */}
+
       {showComments && (
         <div
           className="comentario-area"
           style={{
-            position: "relative",
-            padding: "10px",
-            backgroundColor: "#333",
-            borderRadius: "5px",
+            position: "relative", // Para que el botón absoluto se posicione respecto a este contenedor
+            display: "flex",
+            alignItems: "center",
           }}
         >
           <textarea
-            id="comentario"
-            className="textarea-custom"
+            value={commentText}
+            onChange={(e) => setCommentText(e.target.value)}
             placeholder="Escribe un comentario público..."
+            className="textarea-custom"
             style={{
-              width: "100%",
-              height: "100px",
-              padding: "10px",
-              backgroundColor: "#444",
-              color: "#fff",
-              borderRadius: "5px",
-              border: "none",
-              outline: "none",
-              resize: "none",
+              flex: 1,
+              paddingRight: "50px", // Añade espacio para evitar que el texto del textarea se solape con el botón
             }}
           />
           <button
+            onClick={handleSendComment}
             className="button-send"
             style={{
-              position: "absolute",
-              bottom: "15px",
-              right: "10px",
-              padding: "10px",
-              color: "#707070",
+              position: "absolute", // Posición absoluta respecto al contenedor
+              bottom: "10px", // Desde abajo
+              right: "1px", // Desde la derecha
+              background: "none",
               border: "none",
-              borderRadius: "5px",
+              fontSize: "1.1rem",
               cursor: "pointer",
+              color: "#0866FF", // Un color visible
             }}
           >
             <IoSend />
           </button>
         </div>
       )}
+
+      {/* Lista de comentarios */}
+      {/* {comments.length > 0 && <hr className="line-hr" />} */}
+      <div className="comentarios-list">
+        {comments.map((comment) => (
+          <div key={comment.id} className="comentario-item">
+            {comment.description}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
-
-// const posts: Post[] = [
-//   {
-//     id: 1,
-//     text: "No olvides aprovechar las oportunidades que tenemos disponibles para ti.",
-//     image: "/public/descarga.webp",
-//     name: "San Felipe Tlalimimilpan",
-//     createdAt: "2024-12-01T10:00:00",
-//   },
-//   {
-//     id: 2,
-//     text: "¡Los esperamos con muchas ganas de compartir más conocimientos!",
-//     image: "/public/descarga.webp",
-//     name: "Alejandro Cuenca",
-//     createdAt: "2024-12-03T12:00:00",
-//   },
-// ];
 
 const FlatList: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -261,15 +238,15 @@ const FlatList: React.FC = () => {
         id: prevPosts.length + 1,
         text: post.text,
         image: post.image,
-        name: "Nombre predeterminado",
+        name: "Sebastian Guzman",
         createdAt: new Date().toISOString(),
       },
     ]);
   };
+
   return (
     <div className="post-list">
       <CreatePost onPostCreate={handleCreateForm} />
-
       {posts.map((post) => (
         <FacebookPost key={post.id} post={post} />
       ))}

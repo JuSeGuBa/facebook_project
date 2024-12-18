@@ -5,15 +5,16 @@
   justify-content: center; /* Centra horizontalmente el contenido */
   align-items: center; /* Centra verticalmente el contenido */
   flex-direction: column; /* Organiza los elementos de forma vertical */
-  width: 100%; /* Asegura que el contenedor ocupe todo el ancho disponible */
+  max-width: 800px;
   padding: 0; /* Agrega algo de padding para separar del borde */
+  margin-left: 90px;
 }
 
 /* Estilos del contenedor de avatar y formulario */
 .description {
   display: flex; /* Usa flexbox para alinear el avatar y el formulario horizontalmente */
   align-items: center; /* Centra verticalmente los elementos dentro del contenedor */
-  justify-content: flex-start; /* Centra los elementos horizontalmente dentro de description */
+  justify-content: flex-start;
   width: 100%; /* Asegura que ocupe todo el ancho */
   padding: 0 15px; /* Agrega un poco de padding en los laterales */
   box-sizing: border-box; /* Asegura que el padding no rompa el diseño */
@@ -27,11 +28,18 @@
   object-fit: cover; /* Asegura que la imagen se recorte adecuadamente */
 }
 
+.avatar-container {
+  margin-right: 10px;
+}
+
 /* Formulario */
 .create-post-form {
-  margin-left: 1rem; /* Espacio entre el avatar y el input */
-  flex-grow: 1; /* Hace que el formulario ocupe el espacio restante */
+  display: flex; /* Usa flexbox para alinear los elementos en una fila */
+  align-items: center; /* Alinea los elementos verticalmente */
+  justify-content: flex-start; /* Alinea los elementos al principio */
   width: 100%;
+  padding: 0;
+  gap: 10px; /* Añade espacio entre los elementos */
 }
 
 /* Contenedor del input de búsqueda */
@@ -40,6 +48,7 @@
   width: 100%;
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 
 /* Estilos del input de búsqueda */
@@ -52,6 +61,7 @@
   font-size: 1rem;
   border: none;
   outline: none;
+  height: 40px;
 }
 
 /* Estilos al enfocar el input */
@@ -85,14 +95,18 @@
 }
 
 .post-button {
+  margin: 0;
+  font-size: 1.5rem;
   color: #1877f2;
   display: inline-block;
   cursor: pointer;
-  transition: background-color 0.3s ease;
 }
 
-/* Card flotante para la previsualización */
-
+.preview-card {
+  width: 100%;
+  margin-top: 15px;
+  padding: 10px;
+}
 /* Contenido de la previsualización */
 .preview-content {
   width: 100%;
@@ -107,7 +121,6 @@
 /* Imagen de previsualización */
 .image-preview {
   position: relative;
-  /* margin-bottom: 0.5px; */
   padding-bottom: 0.5px;
 }
 

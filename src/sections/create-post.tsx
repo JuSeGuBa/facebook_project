@@ -26,7 +26,9 @@ const CreatePost: React.FC<{
   return (
     <div className="post-create">
       <div className="description">
-        <Avatar img="" alt="avatar of Jese" rounded />
+        <div className="avatar-container">
+          <Avatar img="" alt="avatar of Jese" rounded />
+        </div>
         <form className="create-post-form" onSubmit={handleSubmit}>
           <div className="input-container">
             <input
@@ -53,7 +55,7 @@ const CreatePost: React.FC<{
             />
           </div>
           {text.trim() && image && (
-            <button type="submit" className="post-button">
+            <button type="submit" className="post-button ">
               <IoSend />
             </button>
           )}
