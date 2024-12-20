@@ -1,15 +1,23 @@
 import "../styles/flatList-principal.css";
 import { useState } from "react";
-import { FaThumbsUp, FaRegThumbsUp, FaComment, FaShare } from "react-icons/fa";
+import {
+  FaThumbsUp,
+  FaRegThumbsUp,
+  FaComment,
+  FaShare,
+  FaTrashAlt,
+} from "react-icons/fa";
 import {
   RiMessengerFill,
   RiInstagramLine,
   RiWhatsappFill,
 } from "react-icons/ri";
 import { HiOutlineLink } from "react-icons/hi";
+// import { CiEdit } from "react-icons/ci";
 import { BiWorld } from "react-icons/bi";
 import { FcLike } from "react-icons/fc";
 import { IoSend } from "react-icons/io5";
+import { BsPencilSquare } from "react-icons/bs";
 import CreatePost from "./create-post";
 
 // Definición de la interfaz Post
@@ -46,7 +54,11 @@ const getFormattedDate = (createdAt: string) => {
   return createdDate.toLocaleDateString("es-ES", options);
 };
 
-const FacebookPost: React.FC<{ post: Post }> = ({ post }) => {
+const FacebookPost: React.FC<{
+  post: Post;
+  onDelete: (id: number) => void;
+  onSave: (id: number, updatedPost: Post) => void; // Función para guardar los cambios
+}> = ({ post, onDelete }) => {
   const [liked, setLiked] = useState(false);
   const [showReactions, setShowReactions] = useState(false);
   const [selectedReaction, setSelectedReaction] = useState<string | null>(null);
@@ -56,16 +68,15 @@ const FacebookPost: React.FC<{ post: Post }> = ({ post }) => {
   const [showShareOptions, setShowShareOptions] = useState(false);
   const [imageExpanded, setImageExpanded] = useState(false); // Estado para la imagen expandida
 
+  const [editingText, setEditingText] = useState(post.text); // Estado para el texto editado
+  const [editingImage, setEditingImage] = useState(post.image); // Estado para la imagen editada
+
   const handleImageClick = () => {
     setImageExpanded(!imageExpanded); // Alternar entre expandir o contraer la imagen
   };
 
   const handleReactionClick = (reaction: string) => {
-    if (selectedReaction === reaction) {
-      setSelectedReaction(null);
-    } else {
-      setSelectedReaction(reaction);
-    }
+    setSelectedReaction((prev) => (prev === reaction ? null : reaction));
   };
 
   const getReactionTextAndIcon = () => {
@@ -95,13 +106,44 @@ const FacebookPost: React.FC<{ post: Post }> = ({ post }) => {
       description: commentText,
     };
 
-    setComments([...comments, newComment]);
-    setCommentText("");
+    setComments((prevComments) => [...prevComments, newComment]);
+    setCommentText(""); // Limpiar el campo de texto
   };
 
   return (
     <div className="post">
       <div className="post-header">
+        <button
+          className="edit-btn"
+          style={{
+            position: "absolute",
+            top: "10px",
+            right: "40px", // Asegúrate de ajustarlo para que quede a la izquierda del botón de eliminar
+            background: "transparent",
+            border: "none",
+            fontSize: "1.2rem",
+            cursor: "pointer",
+          }}
+          title="Editar post"
+        >
+          <BsPencilSquare />
+        </button>
+        <button
+          className="delete-btn"
+          onClick={() => onDelete(post.id)}
+          style={{
+            position: "absolute",
+            top: "10px",
+            right: "0px",
+            background: "transparent",
+            border: "none",
+            fontSize: "1.2rem",
+            cursor: "pointer",
+          }}
+          title="Eliminar post"
+        >
+          <FaTrashAlt />
+        </button>
         <span className="author">{post.name}</span>
         <span className="date">
           {getFormattedDate(post.createdAt)}{" "}
@@ -109,13 +151,31 @@ const FacebookPost: React.FC<{ post: Post }> = ({ post }) => {
         </span>
       </div>
 
-      <p className="post-content">{post.text}</p>
+      {/* Mostrar formulario de edición solo cuando estamos editando */}
+      {editingText !== post.text ? (
+        <div className="edit-post-content">
+          <textarea
+            value={editingText}
+            onChange={(e) => setEditingText(e.target.value)}
+          />
+          <input
+            type="text"
+            value={editingImage}
+            onChange={(e) => setEditingImage(e.target.value)}
+            placeholder="URL de la nueva imagen"
+          />
+        </div>
+      ) : (
+        <p className="post-content">{post.text}</p>
+      )}
+
+      {/* Mostrar la imagen del post o el formulario de edición */}
       <div
         className={`post-image-container ${imageExpanded ? "expanded" : ""}`}
         onClick={handleImageClick}
       >
         <img
-          src={post.image}
+          src={editingImage || post.image} // Mostrar la imagen editada o la original
           alt="post visual"
           className={`post-image ${imageExpanded ? "expanded" : ""}`}
         />
@@ -212,6 +272,12 @@ const FacebookPost: React.FC<{ post: Post }> = ({ post }) => {
           <textarea
             value={commentText}
             onChange={(e) => setCommentText(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault(); // Evitar el salto de línea
+                handleSendComment(); // Enviar el comentario al presionar Enter
+              }
+            }}
             placeholder="Escribe un comentario público..."
             className="textarea-custom"
             style={{ flex: 1, paddingRight: "50px" }}
@@ -249,25 +315,64 @@ const FacebookPost: React.FC<{ post: Post }> = ({ post }) => {
 
 const FlatList: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
+  const [editingPost, setEditingPost] = useState<Post | null>(null);
 
   const handleCreateForm = (post: { text: string; image: string }) => {
-    setPosts((prevPosts) => [
-      ...prevPosts,
-      {
-        id: prevPosts.length + 1,
-        text: post.text,
-        image: post.image,
-        name: "Sebastian Guzman",
-        createdAt: new Date().toISOString(),
-      },
-    ]);
+    const newPost = {
+      id: posts.length + 1,
+      text: post.text,
+      image: post.image,
+      name: "Sebastian Guzman",
+      createdAt: new Date().toISOString(),
+    };
+
+    setPosts((prevPosts) => {
+      // Verificar si el post ya existe
+      if (
+        prevPosts.some(
+          (p) => p.text === newPost.text && p.image === newPost.image
+        )
+      ) {
+        return prevPosts; // No agregar duplicados
+      }
+      return [...prevPosts, newPost];
+    });
+  };
+
+  const handleDeletePost = (id: number) => {
+    setPosts((prevPosts) => prevPosts.filter((post) => post.id !== id));
+  };
+
+  const handleSaveEditedPost = (id: number, updatedPost: Post) => {
+    setPosts((prevPosts) => {
+      return prevPosts.map((post) =>
+        post.id === id
+          ? { ...post, text: updatedPost.text, image: updatedPost.image }
+          : post
+      );
+    });
+    setEditingPost(null); // Cerrar el formulario de edición
   };
 
   return (
     <div className="post-list">
       <CreatePost onPostCreate={handleCreateForm} />
+      {editingPost && (
+        <div className="edit-post-form">
+          <FacebookPost
+            post={editingPost}
+            onDelete={handleDeletePost}
+            onSave={handleSaveEditedPost}
+          />
+        </div>
+      )}
       {posts.map((post) => (
-        <FacebookPost key={post.id} post={post} />
+        <FacebookPost
+          key={post.id}
+          post={post}
+          onDelete={handleDeletePost}
+          onSave={handleSaveEditedPost}
+        />
       ))}
     </div>
   );

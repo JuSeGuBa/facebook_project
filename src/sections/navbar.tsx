@@ -50,18 +50,27 @@ const CustomNavbar: React.FC = () => {
           arrowIcon={false}
           inline
           label={<Avatar alt="User settings" rounded></Avatar>}
+          className="bg-[#2E2E2E] no-border"
         >
-          <Dropdown.Header>
+          <Dropdown.Header className="text-white ">
             <span className="block text-sm">Sebastian Guzman</span>
             <span className="block truncate text-sm font-medium">
               sebancho42@gmail.com
             </span>
           </Dropdown.Header>
-          <Dropdown.Item>Dashboard</Dropdown.Item>
-          <Dropdown.Item>Settings</Dropdown.Item>
-          <Dropdown.Item>Earnings</Dropdown.Item>
+          <Dropdown.Item className="text-white hover:text-gray-700">
+            Dashboard
+          </Dropdown.Item>
+          <Dropdown.Item className="text-white hover:text-gray-700">
+            Settings
+          </Dropdown.Item>
+          <Dropdown.Item className="text-white hover:text-gray-700">
+            Earnings
+          </Dropdown.Item>
           <Dropdown.Divider />
-          <Dropdown.Item>Sign out</Dropdown.Item>
+          <Dropdown.Item className="text-white hover:text-gray-700">
+            Sign out
+          </Dropdown.Item>
         </Dropdown>
       </div>
 

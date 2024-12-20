@@ -46,3 +46,7 @@
   outline: none;
   box-shadow: none; /* Elimina el borde generado por foco */
 }
+
+.no-border {
+  border: none;
+}
