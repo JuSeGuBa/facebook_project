@@ -55,6 +55,7 @@
 .search-input {
   width: 100%;
   padding: 12px 50px 12px 12px; /* Espacio adicional a la derecha */
+
   background-color: #434343;
   color: white;
   border-radius: 9999px;

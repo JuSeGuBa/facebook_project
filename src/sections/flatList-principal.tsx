@@ -17,6 +17,8 @@ import { HiOutlineLink } from "react-icons/hi";
 import { BiWorld } from "react-icons/bi";
 import { FcLike } from "react-icons/fc";
 import { IoSend } from "react-icons/io5";
+import { IoMdPhotos } from "react-icons/io";
+
 import { BsPencilSquare } from "react-icons/bs";
 import CreatePost from "./create-post";
 
@@ -58,7 +60,7 @@ const FacebookPost: React.FC<{
   post: Post;
   onDelete: (id: number) => void;
   onSave: (id: number, updatedPost: Post) => void; // Función para guardar los cambios
-}> = ({ post, onDelete }) => {
+}> = ({ post, onDelete, onSave }) => {
   const [liked, setLiked] = useState(false);
   const [showReactions, setShowReactions] = useState(false);
   const [selectedReaction, setSelectedReaction] = useState<string | null>(null);
@@ -66,14 +68,11 @@ const FacebookPost: React.FC<{
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState<Comment[]>(post.comments || []);
   const [showShareOptions, setShowShareOptions] = useState(false);
-  const [imageExpanded, setImageExpanded] = useState(false); // Estado para la imagen expandida
+  const [imageExpanded, setImageExpanded] = useState(false);
 
   const [editingText, setEditingText] = useState(post.text); // Estado para el texto editado
   const [editingImage, setEditingImage] = useState(post.image); // Estado para la imagen editada
-
-  const handleImageClick = () => {
-    setImageExpanded(!imageExpanded); // Alternar entre expandir o contraer la imagen
-  };
+  const [isEditing, setIsEditing] = useState(false); // Estado para controlar si estamos editando
 
   const handleReactionClick = (reaction: string) => {
     setSelectedReaction((prev) => (prev === reaction ? null : reaction));
@@ -110,15 +109,39 @@ const FacebookPost: React.FC<{
     setCommentText(""); // Limpiar el campo de texto
   };
 
+  const handleEditClick = () => {
+    setIsEditing(true); // Activar el modo de edición
+  };
+
+  const handleSaveClick = () => {
+    const updatedPost = { ...post, text: editingText, image: editingImage };
+    onSave(post.id, updatedPost); // Guardar los cambios
+    setIsEditing(false); // Desactivar el modo de edición
+  };
+
+  const handleImageClick = () => {
+    setImageExpanded(!imageExpanded);
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      // Convertir la imagen a una URL temporal
+      const imageUrl = URL.createObjectURL(file);
+      setEditingImage(imageUrl); // Actualizar el estado de la imagen editada
+    }
+  };
+
   return (
     <div className="post">
       <div className="post-header">
         <button
           className="edit-btn"
+          onClick={handleEditClick} // Activar el modo de edición
           style={{
             position: "absolute",
             top: "10px",
-            right: "40px", // Asegúrate de ajustarlo para que quede a la izquierda del botón de eliminar
+            right: "40px",
             background: "transparent",
             border: "none",
             fontSize: "1.2rem",
@@ -152,18 +175,39 @@ const FacebookPost: React.FC<{
       </div>
 
       {/* Mostrar formulario de edición solo cuando estamos editando */}
-      {editingText !== post.text ? (
+      {isEditing ? (
         <div className="edit-post-content">
           <textarea
+            className="texterea-edit"
             value={editingText}
             onChange={(e) => setEditingText(e.target.value)}
+            placeholder="Escribe tu nuevo texto aquí..."
+            rows={4} // Puedes ajustar el número de filas según lo necesites
+            style={{
+              backgroundColor: "#444",
+
+              color: "white", // Texto oscuro para que se vea bien
+              padding: "10px", // Un poco de espacio dentro del textarea
+              width: "100%", // Asegura que el textarea ocupe todo el ancho disponible
+              fontSize: "16px", // Tamaño de fuente adecuado
+              borderRadius: "5px", // Bordes redondeados para hacerlo más estético
+              resize: "none",
+            }}
           />
-          <input
-            type="text"
-            value={editingImage}
-            onChange={(e) => setEditingImage(e.target.value)}
-            placeholder="URL de la nueva imagen"
-          />
+          <div className="button-edit-container">
+            <input
+              type="file"
+              onChange={handleImageChange}
+              style={{ display: "none" }} // Puedes ocultarlo si prefieres solo el botón de foto
+              id="image-upload"
+            />
+            <label htmlFor="image-upload" className="button-edit-image">
+              <IoMdPhotos />
+            </label>
+            <button onClick={handleSaveClick} className="button-save-edit">
+              Guardar
+            </button>
+          </div>
         </div>
       ) : (
         <p className="post-content">{post.text}</p>
@@ -175,12 +219,13 @@ const FacebookPost: React.FC<{
         onClick={handleImageClick}
       >
         <img
-          src={editingImage || post.image} // Mostrar la imagen editada o la original
+          src={editingImage || post.image}
           alt="post visual"
           className={`post-image ${imageExpanded ? "expanded" : ""}`}
         />
       </div>
 
+      {/* Las acciones del post */}
       <div className="post-actions">
         <div
           className="action-btn"
@@ -212,6 +257,7 @@ const FacebookPost: React.FC<{
           )}
         </div>
 
+        {/* Comentar y compartir */}
         <div
           className="action-btn"
           onClick={() => setShowComments(!showComments)}
@@ -267,6 +313,7 @@ const FacebookPost: React.FC<{
         </div>
       </div>
 
+      {/* Comentarios */}
       {showComments && (
         <div className="comentario-area" style={{ position: "relative" }}>
           <textarea

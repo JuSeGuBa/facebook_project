@@ -231,3 +231,37 @@
 .edit-btn:hover {
   color: #b8bbbf;
 }
+
+.button-edit-container {
+  display: flex; /* Utiliza flexbox para alinear los botones en línea */
+  align-items: center; /* Alinea los botones verticalmente */
+}
+
+.button-edit-image {
+  border: none;
+  color: #45bd62; /* Color verde para el botón */
+  font-size: 1.5rem;
+  cursor: pointer;
+  margin-left: 10px;
+  padding: 5px;
+  margin-right: -10px; /* Espacio entre los botones */
+}
+
+.texterea-edit {
+  border: none;
+  outline: none; /* Elimina el borde azul al hacer clic */
+}
+
+.texterea-edit:focus {
+  outline: none; /* Elimina el borde azul cuando se hace clic */
+  border: none;
+  box-shadow: none;
+}
+
+.button-save-edit {
+  color: white;
+}
+
+.button-save-edit:hover {
+  color: #1877f2;
+}
