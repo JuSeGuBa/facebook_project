@@ -3,9 +3,10 @@ import { Avatar } from "flowbite-react";
 import { IoMdPhotos } from "react-icons/io";
 import { useState } from "react";
 import { IoSend } from "react-icons/io5";
+import { Post } from "../store/reducers/postSlice";
 
 const CreatePost: React.FC<{
-  onPostCreate: (post: { text: string; image: string }) => void;
+  onPostCreate: (post: Post) => void;
 }> = ({ onPostCreate }) => {
   const [text, setText] = useState("");
   const [image, setImage] = useState<string | null>(null);
@@ -13,7 +14,13 @@ const CreatePost: React.FC<{
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (text.trim() || image) {
-      onPostCreate({ text, image: image || "" });
+      onPostCreate({
+        text,
+        image: image || "",
+        id: Math.floor(Math.random() * 10),
+        name: "dddd",
+        createdAt: "",
+      });
       setText("");
       setImage(null);
     }

@@ -8,6 +8,7 @@
 /* Asegúrate de que el sidebar tenga espacio a la izquierda */
 .home-container {
   display: flex;
+  justify-content: space-between;
 }
 
 .sidebar {

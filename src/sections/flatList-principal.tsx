@@ -1,5 +1,6 @@
 import "../styles/flatList-principal.css";
 import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import {
   FaThumbsUp,
   FaRegThumbsUp,
@@ -13,54 +14,44 @@ import {
   RiWhatsappFill,
 } from "react-icons/ri";
 import { HiOutlineLink } from "react-icons/hi";
-// import { CiEdit } from "react-icons/ci";
 import { BiWorld } from "react-icons/bi";
 import { FcLike } from "react-icons/fc";
 import { IoSend } from "react-icons/io5";
 import { IoMdPhotos } from "react-icons/io";
-
 import { BsPencilSquare } from "react-icons/bs";
+import { RootState } from "../store";
+import {
+  Comment,
+  createPost,
+  deletePost,
+  Post,
+  updatePost,
+} from "../store/reducers/postSlice";
 import CreatePost from "./create-post";
+import { useAppDispatch, useAppSelector } from "../hooks";
 
 // Definición de la interfaz Post
-interface Post {
-  id: number;
-  text: string;
-  name: string;
-  image: string;
-  createdAt: string;
-  comments?: Comment[];
-}
-
-interface Comment {
-  id: number;
-  description: string;
-}
 
 const getFormattedDate = (createdAt: string) => {
   const currentDate = new Date();
   const createdDate = new Date(createdAt);
-
   const isSameDay = currentDate.toDateString() === createdDate.toDateString();
-
   if (isSameDay) {
     return "Hoy ·";
   }
-
   const options: Intl.DateTimeFormatOptions = {
     year: "numeric",
     month: "long",
     day: "numeric",
   };
-
   return createdDate.toLocaleDateString("es-ES", options);
 };
 
 const FacebookPost: React.FC<{
   post: Post;
   onDelete: (id: number) => void;
-  onSave: (id: number, updatedPost: Post) => void; // Función para guardar los cambios
-}> = ({ post, onDelete, onSave }) => {
+  onUpdate: (id: number, updatedPost: Post) => void;
+}> = ({ post, onDelete, onUpdate }) => {
   const [liked, setLiked] = useState(false);
   const [showReactions, setShowReactions] = useState(false);
   const [selectedReaction, setSelectedReaction] = useState<string | null>(null);
@@ -69,7 +60,6 @@ const FacebookPost: React.FC<{
   const [comments, setComments] = useState<Comment[]>(post.comments || []);
   const [showShareOptions, setShowShareOptions] = useState(false);
   const [imageExpanded, setImageExpanded] = useState(false);
-
   const [editingText, setEditingText] = useState(post.text); // Estado para el texto editado
   const [editingImage, setEditingImage] = useState(post.image); // Estado para la imagen editada
   const [isEditing, setIsEditing] = useState(false); // Estado para controlar si estamos editando
@@ -99,12 +89,10 @@ const FacebookPost: React.FC<{
 
   const handleSendComment = () => {
     if (commentText.trim() === "") return;
-
     const newComment: Comment = {
       id: comments.length + 1,
       description: commentText,
     };
-
     setComments((prevComments) => [...prevComments, newComment]);
     setCommentText(""); // Limpiar el campo de texto
   };
@@ -115,7 +103,7 @@ const FacebookPost: React.FC<{
 
   const handleSaveClick = () => {
     const updatedPost = { ...post, text: editingText, image: editingImage };
-    onSave(post.id, updatedPost); // Guardar los cambios
+    onUpdate(post.id, updatedPost); // Guardar los cambios
     setIsEditing(false); // Desactivar el modo de edición
   };
 
@@ -126,7 +114,6 @@ const FacebookPost: React.FC<{
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      // Convertir la imagen a una URL temporal
       const imageUrl = URL.createObjectURL(file);
       setEditingImage(imageUrl); // Actualizar el estado de la imagen editada
     }
@@ -137,7 +124,7 @@ const FacebookPost: React.FC<{
       <div className="post-header">
         <button
           className="edit-btn"
-          onClick={handleEditClick} // Activar el modo de edición
+          onClick={handleEditClick}
           style={{
             position: "absolute",
             top: "10px",
@@ -174,7 +161,6 @@ const FacebookPost: React.FC<{
         </span>
       </div>
 
-      {/* Mostrar formulario de edición solo cuando estamos editando */}
       {isEditing ? (
         <div className="edit-post-content">
           <textarea
@@ -182,15 +168,14 @@ const FacebookPost: React.FC<{
             value={editingText}
             onChange={(e) => setEditingText(e.target.value)}
             placeholder="Escribe tu nuevo texto aquí..."
-            rows={4} // Puedes ajustar el número de filas según lo necesites
+            rows={4}
             style={{
               backgroundColor: "#444",
-
-              color: "white", // Texto oscuro para que se vea bien
-              padding: "10px", // Un poco de espacio dentro del textarea
-              width: "100%", // Asegura que el textarea ocupe todo el ancho disponible
-              fontSize: "16px", // Tamaño de fuente adecuado
-              borderRadius: "5px", // Bordes redondeados para hacerlo más estético
+              color: "white",
+              padding: "10px",
+              width: "100%",
+              fontSize: "16px",
+              borderRadius: "5px",
               resize: "none",
             }}
           />
@@ -198,7 +183,7 @@ const FacebookPost: React.FC<{
             <input
               type="file"
               onChange={handleImageChange}
-              style={{ display: "none" }} // Puedes ocultarlo si prefieres solo el botón de foto
+              style={{ display: "none" }}
               id="image-upload"
             />
             <label htmlFor="image-upload" className="button-edit-image">
@@ -213,7 +198,6 @@ const FacebookPost: React.FC<{
         <p className="post-content">{post.text}</p>
       )}
 
-      {/* Mostrar la imagen del post o el formulario de edición */}
       <div
         className={`post-image-container ${imageExpanded ? "expanded" : ""}`}
         onClick={handleImageClick}
@@ -225,7 +209,6 @@ const FacebookPost: React.FC<{
         />
       </div>
 
-      {/* Las acciones del post */}
       <div className="post-actions">
         <div
           className="action-btn"
@@ -257,7 +240,6 @@ const FacebookPost: React.FC<{
           )}
         </div>
 
-        {/* Comentar y compartir */}
         <div
           className="action-btn"
           onClick={() => setShowComments(!showComments)}
@@ -291,136 +273,75 @@ const FacebookPost: React.FC<{
                   label: "WhatsApp",
                   url: "https://web.whatsapp.com",
                 },
-                { icon: HiOutlineLink, label: "Copiar enlace" },
-              ].map(({ icon: Icon, label, url }, index) => (
-                <button
-                  key={index}
-                  className="share-button"
-                  title={label}
-                  onClick={() => {
-                    if (url) {
-                      window.open(url, "_blank");
-                    } else {
-                      console.log(`Botón de ${label} clickeado`);
-                    }
-                  }}
+                { icon: HiOutlineLink, label: "Copiar enlace", url: "#" },
+              ].map(({ icon: Icon, label, url }) => (
+                <a
+                  key={label}
+                  href={url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="share-option"
                 >
-                  <Icon size={24} />
-                </button>
+                  <Icon /> {label}
+                </a>
               ))}
             </div>
           )}
         </div>
       </div>
 
-      {/* Comentarios */}
       {showComments && (
-        <div className="comentario-area" style={{ position: "relative" }}>
-          <textarea
-            value={commentText}
-            onChange={(e) => setCommentText(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault(); // Evitar el salto de línea
-                handleSendComment(); // Enviar el comentario al presionar Enter
-              }
-            }}
-            placeholder="Escribe un comentario público..."
-            className="textarea-custom"
-            style={{ flex: 1, paddingRight: "50px" }}
-          />
-          <button
-            onClick={handleSendComment}
-            className="button-send"
-            style={{
-              position: "absolute",
-              bottom: "10px",
-              right: "1px",
-              background: "none",
-              border: "none",
-              fontSize: "1.1rem",
-              cursor: "pointer",
-              color: "#0866FF",
-            }}
-          >
-            <IoSend />
-          </button>
+        <div className="comments-section">
+          {comments.map((comment) => (
+            <div key={comment.id} className="comment">
+              <p>{comment.description}</p>
+            </div>
+          ))}
+          <div className="comment-input">
+            <input
+              type="text"
+              value={commentText}
+              onChange={(e) => setCommentText(e.target.value)}
+              placeholder="Escribe un comentario..."
+            />
+            <button onClick={handleSendComment} className="send-comment-btn">
+              <IoSend />
+            </button>
+          </div>
         </div>
       )}
-
-      {comments.length > 0 && <hr className="line-hr" />}
-      <div className="comentarios-list">
-        {comments.map((comment) => (
-          <div key={comment.id} className="comentario-item">
-            {comment.description}
-          </div>
-        ))}
-      </div>
     </div>
   );
 };
 
-const FlatList: React.FC = () => {
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [editingPost, setEditingPost] = useState<Post | null>(null);
+const FlatList = () => {
+  const dataPosts = useAppSelector((state: RootState) => state.post);
+  const dispatch = useAppDispatch();
 
-  const handleCreateForm = (post: { text: string; image: string }) => {
-    const newPost = {
-      id: posts.length + 1,
-      text: post.text,
-      image: post.image,
-      name: "Sebastian Guzman",
-      createdAt: new Date().toISOString(),
-    };
-
-    setPosts((prevPosts) => {
-      // Verificar si el post ya existe
-      if (
-        prevPosts.some(
-          (p) => p.text === newPost.text && p.image === newPost.image
-        )
-      ) {
-        return prevPosts; // No agregar duplicados
-      }
-      return [...prevPosts, newPost];
-    });
+  const handleDelete = (id: number) => {
+    dispatch(deletePost(id)); // Llamar a la acción para eliminar la publicación
   };
 
-  const handleDeletePost = (id: number) => {
-    setPosts((prevPosts) => prevPosts.filter((post) => post.id !== id));
+  const handleCreate = (post: Post) => {
+    dispatch(createPost(post)); // Llamar a la acción para guardar la publicación actualizada
   };
 
-  const handleSaveEditedPost = (id: number, updatedPost: Post) => {
-    setPosts((prevPosts) => {
-      return prevPosts.map((post) =>
-        post.id === id
-          ? { ...post, text: updatedPost.text, image: updatedPost.image }
-          : post
-      );
-    });
-    setEditingPost(null); // Cerrar el formulario de edición
+  const handleUpdate = (id: number, post: Post) => {
+    dispatch(updatePost({ id, post }));
   };
 
   return (
-    <div className="post-list">
-      <CreatePost onPostCreate={handleCreateForm} />
-      {editingPost && (
-        <div className="edit-post-form">
+    <div className="flat-list">
+      {dataPosts &&
+        dataPosts.posts.map((post) => (
           <FacebookPost
-            post={editingPost}
-            onDelete={handleDeletePost}
-            onSave={handleSaveEditedPost}
+            key={post.id}
+            post={post}
+            onDelete={handleDelete}
+            onUpdate={handleUpdate}
           />
-        </div>
-      )}
-      {posts.map((post) => (
-        <FacebookPost
-          key={post.id}
-          post={post}
-          onDelete={handleDeletePost}
-          onSave={handleSaveEditedPost}
-        />
-      ))}
+        ))}
+      <CreatePost onPostCreate={handleCreate} />
     </div>
   );
 };

@@ -7,7 +7,8 @@
   flex-direction: column; /* Organiza los elementos de forma vertical */
   max-width: 800px;
   padding: 0; /* Agrega algo de padding para separar del borde */
-  margin-left: 90px;
+  width: 500px;
+  padding-top: 10px;
 }
 
 /* Estilos del contenedor de avatar y formulario */
