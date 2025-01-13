@@ -5,9 +5,8 @@
   justify-content: center; /* Centra horizontalmente el contenido */
   align-items: center; /* Centra verticalmente el contenido */
   flex-direction: column; /* Organiza los elementos de forma vertical */
-  max-width: 800px;
+  max-width: 700px;
   padding: 0; /* Agrega algo de padding para separar del borde */
-  width: 500px;
   padding-top: 10px;
 }
 

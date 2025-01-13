@@ -31,9 +31,7 @@ export const postSlice = createSlice({
       const newPost: Post = {
         ...action.payload,
       };
-      console.log(newPost, state);
-      state.posts = [...state.posts, newPost];
-      // state.posts.push(newPost); // Añade el nuevo post al estado
+      state.posts.push(newPost); // Añade el nuevo post al estado
     },
     // Actualizar un post existente
     updatePost: (state, action: PayloadAction<{ id: number; post: Post }>) => {

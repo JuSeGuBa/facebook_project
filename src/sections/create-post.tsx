@@ -18,8 +18,8 @@ const CreatePost: React.FC<{
         text,
         image: image || "",
         id: Math.floor(Math.random() * 10),
-        name: "dddd",
-        createdAt: "",
+        name: "Sebastian Guzman",
+        createdAt: new Date().toISOString(),
       });
       setText("");
       setImage(null);

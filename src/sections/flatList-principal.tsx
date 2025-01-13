@@ -230,7 +230,9 @@ const FacebookPost: React.FC<{
                 <button
                   key={emoji}
                   onClick={() => handleReactionClick(emoji)}
-                  className={`reaction-btn ${selectedReaction === emoji ? "selected" : ""}`}
+                  className={`reaction-btn ${
+                    selectedReaction === emoji ? "selected" : ""
+                  }`}
                   title={label}
                 >
                   {emoji}
@@ -315,7 +317,7 @@ const FacebookPost: React.FC<{
 };
 
 const FlatList = () => {
-  const dataPosts = useAppSelector((state: RootState) => state.post);
+  const dataPosts = useAppSelector((state: RootState) => state.posts);
   const dispatch = useAppDispatch();
 
   const handleDelete = (id: number) => {
@@ -332,16 +334,16 @@ const FlatList = () => {
 
   return (
     <div className="flat-list">
+      <CreatePost onPostCreate={handleCreate} />
       {dataPosts &&
-        dataPosts.posts.map((post) => (
+        dataPosts.posts.map((post, i) => (
           <FacebookPost
-            key={post.id}
+            key={post.id + i}
             post={post}
             onDelete={handleDelete}
             onUpdate={handleUpdate}
           />
         ))}
-      <CreatePost onPostCreate={handleCreate} />
     </div>
   );
 };
