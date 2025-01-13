@@ -1,6 +1,5 @@
 import "../styles/flatList-principal.css";
 import { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
 import {
   FaThumbsUp,
   FaRegThumbsUp,
