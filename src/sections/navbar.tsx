@@ -48,27 +48,35 @@ const CustomNavbar: React.FC = () => {
 
         <Dropdown
           arrowIcon={false}
-          inline
-          label={<Avatar alt="User settings" rounded></Avatar>}
+          label={
+            <Avatar
+              alt="User settings"
+              rounded
+              className="bg-[#2E2E2E] text-white"
+            ></Avatar>
+          }
           className="bg-[#2E2E2E] no-border"
+          style={{
+            background: "transparent",
+          }}
         >
-          <Dropdown.Header className="text-white ">
+          <Dropdown.Header className="text-white">
             <span className="block text-sm">Sebastian Guzman</span>
             <span className="block truncate text-sm font-medium">
               sebancho42@gmail.com
             </span>
           </Dropdown.Header>
-          <Dropdown.Item className="text-white hover:text-gray-700">
+          <Dropdown.Item className="bg-[#2E2E2E] text-white hover:text-gray-700">
             Dashboard
           </Dropdown.Item>
-          <Dropdown.Item className="text-white hover:text-gray-700">
+          <Dropdown.Item className="bg-[#2E2E2E] text-white hover:text-gray-700">
             Settings
           </Dropdown.Item>
-          <Dropdown.Item className="text-white hover:text-gray-700">
+          <Dropdown.Item className="bg-[#2E2E2E] text-white hover:text-gray-700">
             Earnings
           </Dropdown.Item>
           <Dropdown.Divider />
-          <Dropdown.Item className="text-white hover:text-gray-700">
+          <Dropdown.Item className="bg-[#2E2E2E] text-white hover:text-gray-700">
             Sign out
           </Dropdown.Item>
         </Dropdown>

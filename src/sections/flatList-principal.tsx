@@ -281,9 +281,9 @@ const FacebookPost: React.FC<{
                   href={url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="share-option"
+                  className="share-option-a"
                 >
-                  <Icon /> {label}
+                  <Icon />
                 </a>
               ))}
             </div>
@@ -306,7 +306,7 @@ const FacebookPost: React.FC<{
               placeholder="Escribe un comentario..."
             />
             <button onClick={handleSendComment} className="send-comment-btn">
-              <IoSend />
+              <IoSend color="#1877f2" size={20} />
             </button>
           </div>
         </div>

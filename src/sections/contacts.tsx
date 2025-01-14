@@ -24,7 +24,7 @@ const contacts: Contact[] = [
 const Contact = () => {
   return (
     <div className="contacts ">
-      <h2 className="text-xl font-bold mb-4">Contactos</h2>
+      <h2 className="text-xl font-bold mb-4 text-white">Contactos</h2>
       <div className="space-y-4">
         {contacts.map((contact, index) => (
           <Card key={index} className="card cursor-pointer " horizontal>

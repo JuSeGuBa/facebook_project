@@ -91,9 +91,7 @@
   cursor: pointer;
   font-size: 14px;
   color: #b8bbbf;
-  transition:
-    background-color 0.3s,
-    color 0.3s;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 .action-btn:hover {
@@ -112,21 +110,19 @@
   z-index: 10;
 }
 
+.share-option-a {
+  font-size: 18px;
+}
+
 .share-options {
-  position: absolute; /* Asegura que esté fuera del flujo del documento */
-  transform: translateX(-50%); /* Compensa el centrado */
-  display: flex;
   gap: 10px; /* Espaciado entre los iconos */
   padding: 10px;
-  background: #252728;
   border-radius: 8px;
-  justify-content: center;
   align-items: center;
-  transition:
-    opacity 0.3s ease,
-    transform 0.3s ease; /* Añade transiciones suaves */
+  transition: opacity 0.3s ease, transform 0.3s ease; /* Añade transiciones suaves */
   pointer-events: none; /* Evita interacción si no está visible */
-  z-index: 100; /* Asegura que esté por encima de otros elementos */
+  bottom: 40px;
+  right: -40px;
 }
 
 .post-actions .action-btn:hover .share-options {
@@ -264,4 +260,39 @@
 
 .button-save-edit:hover {
   color: #1877f2;
+}
+
+.comments-section {
+  margin: 10px 10px;
+}
+
+.flat-list {
+  width: 500px;
+}
+
+.comment {
+  background: #3b3d3e;
+  width: 50%;
+  margin: 10px 10px;
+  border-radius: 10px;
+  padding: 5px 15px;
+  color: white;
+}
+
+.comment-input {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.comment-input input {
+  background-color: #3b3d3e;
+  padding: 10px;
+  border-radius: 10px;
+  color: white;
+  width: 85%;
+}
+
+.send-comment-btn {
+  background-color: transparent;
 }

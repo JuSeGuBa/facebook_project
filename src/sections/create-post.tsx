@@ -61,11 +61,9 @@ const CreatePost: React.FC<{
               className="hidden-file-input"
             />
           </div>
-          {text.trim() && image && (
-            <button type="submit" className="post-button ">
-              <IoSend />
-            </button>
-          )}
+          <button type="submit" className="post-button ">
+            <IoSend />
+          </button>
         </form>
       </div>
       {(text.trim() || image) && (

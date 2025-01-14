@@ -80,7 +80,10 @@ const CustomSidebar: React.FC = () => {
             <FlowbiteSidebar.Collapse
               icon={IoIosArrowDropdownCircle}
               label="Ver más"
-              className=" text-white hover:bg-[#2E2E2E] no-hover-text py-4"
+              className="text-white hover:bg-[#2E2E2E] hover:text-gray-200 py-4"
+              style={{
+                background: "transparent",
+              }}
             >
               <FlowbiteSidebar.Item
                 href="#"
