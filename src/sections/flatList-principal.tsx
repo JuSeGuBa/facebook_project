@@ -334,7 +334,7 @@ const FlatList = () => {
   return (
     <div className="flat-list">
       <CreatePost onPostCreate={handleCreate} />
-      {dataPosts &&
+      {dataPosts.posts &&
         dataPosts.posts.map((post, i) => (
           <FacebookPost
             key={post.id + i}
