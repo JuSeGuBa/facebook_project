@@ -290,9 +290,10 @@ const FacebookPost: React.FC<{
           )}
         </div>
       </div>
-
       {showComments && (
         <div className="comments-section">
+          <hr className="line-hr" />
+
           {comments.map((comment) => (
             <div key={comment.id} className="comment">
               <p>{comment.description}</p>

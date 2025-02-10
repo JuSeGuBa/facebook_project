@@ -55,7 +55,7 @@ const CustomNavbar: React.FC = () => {
               className="bg-[#2E2E2E] text-white"
             ></Avatar>
           }
-          className="bg-[#2E2E2E] no-border"
+          className="button-avatar bg-[#2E2E2E] no-border"
           style={{
             background: "transparent",
           }}

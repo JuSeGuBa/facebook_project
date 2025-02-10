@@ -91,7 +91,9 @@
   cursor: pointer;
   font-size: 14px;
   color: #b8bbbf;
-  transition: background-color 0.3s, color 0.3s;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
 }
 
 .action-btn:hover {
@@ -119,7 +121,9 @@
   padding: 10px;
   border-radius: 8px;
   align-items: center;
-  transition: opacity 0.3s ease, transform 0.3s ease; /* Añade transiciones suaves */
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease; /* Añade transiciones suaves */
   pointer-events: none; /* Evita interacción si no está visible */
   bottom: 40px;
   right: -40px;
@@ -286,13 +290,26 @@
 }
 
 .comment-input input {
-  background-color: #3b3d3e;
+  background-color: #2e2e2e;
   padding: 10px;
   border-radius: 10px;
   color: white;
   width: 85%;
+  border: none;
+}
+
+input:active,
+input:focus {
+  box-shadow: none !important;
 }
 
 .send-comment-btn {
   background-color: transparent;
+}
+
+button:active,
+button:focus {
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
 }
