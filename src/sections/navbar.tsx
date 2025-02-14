@@ -8,6 +8,7 @@ import { CgGames } from "react-icons/cg";
 import { CgMenuGridO } from "react-icons/cg";
 import { FaFacebookMessenger } from "react-icons/fa";
 import { IoMdNotifications } from "react-icons/io";
+import { FaFacebook } from "react-icons/fa";
 
 const CustomNavbar: React.FC = () => {
   return (
@@ -17,11 +18,7 @@ const CustomNavbar: React.FC = () => {
       style={{ backgroundColor: "#2e2e2e", padding: "0.5px 20px" }}
     >
       <Navbar.Brand>
-        <img
-          src="/public/logoFacebook.svg"
-          alt="Facebook Logo"
-          className="w-10 h-10"
-        />
+        <FaFacebook />
         <form method="GET" className="ml-4 flex items-center">
           <div className="relative">
             <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
