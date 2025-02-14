@@ -18,7 +18,7 @@ const CustomNavbar: React.FC = () => {
       style={{ backgroundColor: "#2e2e2e", padding: "0.5px 20px" }}
     >
       <Navbar.Brand>
-        <FaFacebook />
+        <FaFacebook style={{ fontSize: "2rem", color: "#1A6DD8" }} />
         <form method="GET" className="ml-4 flex items-center">
           <div className="relative">
             <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
